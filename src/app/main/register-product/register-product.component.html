@@ -1,0 +1,48 @@
+<div class="jumbotron mt-5 pt-4">
+  <h4>Cadastro de Produtos</h4>
+  <form [formGroup]="formGroup">
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="name">Produto</label>
+          <input type="text" class="form-control" formControlName="name" id="name" placeholder="Nome do Produto"
+            [ngClass]="{ 'is-invalid': submitted && hasError('name') }">
+          <div class="invalid-feedback" *ngIf="hasError('name') && hasError('name')['required']" >
+            Por favor informe o nome do produto.
+          </div>
+          <div class="invalid-feedback" *ngIf="hasError('name') && hasError('name')['minlength']" >
+            Por favor informe o minimo de {{ hasError('name')['minlength'].requiredLength }} caracteres.
+          </div>
+          <div class="invalid-feedback" *ngIf="hasError('name') && hasError('name')['maxlength']" >
+            Por favor informe o máximo de {{ hasError('name')['maxlength'].requiredLength }} caracteres.
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="quntity">Quantidade</label>
+          <input type="number" class="form-control" formControlName="quantity" id="quntity"
+            placeholder="Quantidade de Produtos a ser Cadastrados"
+            [ngClass]="{ 'is-invalid': submitted && hasError('quantity') }">
+          <div class="invalid-feedback" *ngIf="hasError('quantity') && hasError('quantity')['required']">
+            Por favor informe uma quantidade.
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="value">Valor</label>
+          <input type="number" class="form-control" formControlName="value" id="value" placeholder="Valor do Produto"
+            [ngClass]="{ 'is-invalid': submitted && hasError('value') }">
+          <div class="invalid-feedback" *ngIf="hasError('value') && hasError('value')['required']" >
+            Por favor informe um valor.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="float-right">
+      <button type="submit" class="btn btn-success mr-2" (click)="saveProduct()">Salvar</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancelar</button>
+    </div>
+  </form>
+</div>

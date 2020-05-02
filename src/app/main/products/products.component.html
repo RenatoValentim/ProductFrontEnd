@@ -1,0 +1,78 @@
+<div class="card mt-5">
+  <div class="card-header">
+
+    <div class="float-left">
+      <h4 class="mt-2">Produtos</h4>
+    </div>
+    <div class="float-right">
+      <button type="button" class="btn btn-primary mr-2" [routerLink]="['/novo-produto']"
+        routerLinkActive="router-link-active">Novo Produto</button>
+    </div>
+  </div>
+
+  <div class="card-body">
+
+    <table class="table table-hover" *ngIf="products$ | async as products; else loading">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Quantidade</th>
+          <th>Valor</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td scope="row">{{ product.id }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.value }}</td>
+          <td>
+            <span class="float-right">
+              <button type="button" class="btn btn-outline-warning mr-2" [routerLink]="['/atualizar']"
+                routerLinkActive="router-link-active" (click)="update(product.id)">Atualizar</button>
+              <button type="button" class="btn btn-outline-danger" (click)="delete(product)">Remover</button>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #loading>
+      <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-success" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-danger" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-warning" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-info" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-light" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-dark" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </ng-template>
+
+  </div>
+</div>
+
+<ng-template #deleteModal>
+  <div class="modal-body text-center">
+    <p>Tem certeza que deseja remover esse produto?</p>
+    <button type="button" class="btn btn-default" (click)="confirmDelete()">Sim</button>
+    <button type="button" class="btn btn-primary" (click)="declineDelete()">Não</button>
+  </div>
+</ng-template>
