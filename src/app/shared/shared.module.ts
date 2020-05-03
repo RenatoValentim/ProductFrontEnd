@@ -10,6 +10,7 @@ import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
   imports: [
     CommonModule
   ],
-  exports: [AlertModalComponent]
+  exports: [AlertModalComponent, ConfirmModalComponent],
+  entryComponents: [ConfirmModalComponent]
 })
 export class SharedModule { }

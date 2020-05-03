@@ -1,8 +1,8 @@
 import { AlertModalService } from './../../shared/alert-modal.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { Observable, empty, Subject } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, Subject, EMPTY } from 'rxjs';
+import { catchError, take, switchMap } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 import { ProductService } from '../services/product.service';
@@ -27,10 +27,10 @@ export class ProductsComponent implements OnInit {
   bsModalRef: BsModalRef;
 
   constructor(private productService: ProductService,
-    private modalService: BsModalService,
-    private alertService: AlertModalService,
-    private router: Router,
-    private route: ActivatedRoute) { }
+              private modalService: BsModalService,
+              private alertService: AlertModalService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.refresh();
@@ -42,7 +42,7 @@ export class ProductsComponent implements OnInit {
         catchError(err => {
           console.error(err);
           this.handleError();
-          return empty();
+          return EMPTY;
         })
       );
   }
@@ -57,7 +57,20 @@ export class ProductsComponent implements OnInit {
 
   delete(product: Products) {
     this.selectedProduct = product;
-    this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-sm' });
+    const result$ = this.alertService.showConfirm('Confirmação', 'Tem certeza que deseja remover esse produto?');
+    result$.asObservable()
+      .pipe(
+        take(1),
+        switchMap(result => result ? this.productService.delete(product.id) : EMPTY)
+      )
+      .subscribe(
+        success => {
+          this.refresh();
+          this.alertService.showAlertSuccess('Produto Removido com Sucesso.');
+        },
+        error => {
+          this.alertService.showAlertDanger('Erro ao remover o produto . Tente novamente mais tarde.');
+        });
   }
 
   confirmDelete() {
